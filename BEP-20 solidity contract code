@@ -1,0 +1,50 @@
+pragma solidity ^0.8.0;
+
+import "https://github.com/binance-chain/smart-contract-standards/contracts/tokens/BEP20/BEP20.sol";
+
+contract WormsLaddersToken is BEP20 {
+    string public name = "Worms & Ladders Token";
+    string public symbol = "WLT";
+    uint8 public decimals = 18;
+    uint256 public totalSupply = 100000000;
+    mapping (address => uint256) public balanceOf;
+
+    constructor() public {
+        // Assign all tokens to the contract's deployer
+        balanceOf[msg.sender] = totalSupply;
+    }
+
+    function transfer(address _to, uint256 _value) public {
+        require(_to != address(0));
+        require(_value <= balanceOf[msg.sender]);
+
+        // SafeMath.sub will throw if there is not enough balance.
+        balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value);
+        // SafeMath.add will throw if there is not enough space.
+        balanceOf[_to] = balanceOf[_to].add(_value);
+        emit Transfer(msg.sender, _to, _value);
+    }
+
+    function approve(address _spender, uint256 _value) public {
+        require(_spender != address(0));
+
+        // To change the approve amount you first have to reduce the addresses`
+        // allowance to zero by calling `approve(_spender, 0)` if it is not already 0 to mitigate the race condition described here:
+        // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+        require((_value == 0) || (allowance[msg.sender][_spender] == 0));
+
+        allowance[msg.sender][_spender] = _value;
+        emit Approval(msg.sender, _spender, _value);
+    }
+
+    function transferFrom(address _from, address _to, uint256 _value) public {
+        require(_to != address(0));
+        require(_value <= balanceOf[_from]);
+        require(_value <= allowance[_from][msg.sender]);
+
+        allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
+        balanceOf[_from] = balanceOf[_from].sub(_value);
+        balanceOf[_to] = balanceOf[_to].add(_value);
+        emit Transfer(_from, _to, _value);
+    }
+}
