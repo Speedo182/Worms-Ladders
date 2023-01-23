@@ -1,0 +1,147 @@
+pragma solidity ^0.8.0;
+
+contract WormsLadders {
+    // Token properties
+    string public name;
+    string public symbol;
+    uint8 public decimals;
+    uint256 public totalSupply;
+    
+    // Game properties
+    address public owner;
+    mapping(address => uint256) public balanceOf;
+    mapping(address => bool) public players;
+    mapping(address => uint) public positionOf;
+    mapping(address => address) public referrerOf;
+    mapping(address => uint) public winRatioOf;
+    mapping(address => uint) public lastTurnTimestamp;
+    mapping(address => bool) public isPenalty;
+    uint public fee = 1;
+    bool public gameStarted;
+    address[] public playerList;
+    
+    // Events
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event RollDice(address player, uint roll);
+    event Move(address player, uint newPosition);
+    event GameStart(address player);
+    event GameEnd(address winner);
+    event Penalty(address player);
+    event Upgrade(address player);
+    
+    // Modifiers
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+    modifier inGame() {
+        require(gameStarted == true);
+        _;
+    }
+    modifier notPenalty() {modifier notPenalty() {
+         require(isPenalty[msg.sender] == false);
+        _;
+    }
+    // Functions
+function WormsLadders() public {
+    owner = msg.sender;
+    name = "Worms & Ladders Token";
+    symbol = "W&L";
+    decimals = 18;
+    totalSupply = 100000000;
+    balanceOf[owner] = totalSupply;
+}
+
+function joinGame() public payable {
+    require(msg.value == 1 ether);
+    players[msg.sender] = true;
+    positionOf[msg.sender] = 0;
+    balanceOf[msg.sender] = msg.value;
+    playerList.push(msg.sender);
+    if (referrerOf[msg.sender] != address(0)) {
+        balanceOf[referrerOf[msg.sender]] += msg.value / 10;
+    }
+    emit GameStart(msg.sender);
+    gameStarted = true;
+}
+
+function rollDice() public inGame {
+    require(now - lastTurnTimestamp[msg.sender] > 30 seconds);
+    uint roll = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 6 + 1;
+    positionOf[msg.sender] += roll;
+    emit RollDice(msg.senderemit RollDice(msg.sender, roll);
+checkPosition();
+lastTurnTimestamp[msg.sender] = now;
+}
+function checkPosition() private {
+    if(positionOf[msg.sender] >= 100) {
+        emit GameEnd(msg.sender);
+        gameStarted = false;
+    }
+}
+
+function transfer(address _to, uint256 _value) public inGame notPenalty {
+    require(balanceOf[msg.sender] >= _value && _value > 0);
+    require(players[_to] == true);
+    balanceOf[msg.sender] -= _value;
+    balanceOf[_to] += _value;
+    emit Transfer(msg.sender, _to, _value);
+}
+
+function approve(address _spender, uint256 _value) public inGame notPenalty {
+    require(balanceOf[msg.sender] >= _value && _value > 0);
+    require(players[_spender] == true);
+    emit Approval(msg.sender, _spender, _value);
+}
+
+function transferFrom(address _from, address _to, uint256 _value) public inGame notPenalty {
+    require(_value <= balanceOf[_from]);
+    balanceOf[_from] -= _value;
+    balanceOf[_balanceOf[_to] += _value;
+    emit Transfer(_from, _to, _value);
+}
+function balanceOf(address _owner) public view returns (uint256 balance) {
+    return balanceOf[_owner];
+}
+
+function invite(address _friend) public {
+    referrerOf[_friend] = msg.sender;
+}
+
+function updateWinRatio() public inGame {
+    if (msg.sender == winner) {
+        winRatioOf[msg.sender] += 1;
+    }
+}
+
+function matchmake() public {
+    // Matchmaking algorithm that matches players with similar skill levels
+}
+
+function leaderboard() public view returns (address[] memory) {
+    // Leaderboard algorithm that ranks players based on their win/loss ratio
+}
+
+function buyTokens() public payable {
+    require(msg.value > 0);
+    uint tokens = msg.value * (10 ** 18) / 1 ether;
+    totalSupply += tokens;
+    balanceOf[msg.sender] += tokens;
+    emit Transfer(address(0), msg.sender, tokens);
+}
+
+function penalty() public inGame {
+    if (now - lastTurnTimestamp[msg.sender] > 30 seconds) {
+        isPenalty[msg.sender] = true;
+        balanceOf[msg.sender] -= balanceOf[msg.sender] * fee / 100;
+        emit Penalty(msg.sender);
+    }
+}
+
+function upgrade() public {
+    require(balanceOf[msg.sender] >= 1 ether);
+    balanceOf[msg.sender] -= 1 ether;
+    // Upgrade the game features
+    emit Upgrade(msg.sender);
+}
