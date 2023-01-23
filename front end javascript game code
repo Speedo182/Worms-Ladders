@@ -1,0 +1,173 @@
+// Import web3.js library
+const Web3 = require('web3');
+
+// Connect to the Ethereum network
+const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+
+// Get the contract ABI and address
+const contractABI = [ABI of the contract];
+const contractAddress = "0x1234567890abcdef";
+
+// Instantiate the contract
+const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+// Function to roll the dice
+async function rollDice() {
+    // Get the current account
+    const account = web3.eth.getAccounts().then(console.log);
+
+    // Call the rollDice function of the contract
+    await contract.methods.rollDice().send({ from: account, gas: 200000 });
+
+    // Play sound for rolling the dice
+    playSound("diceRoll.mp3");
+
+    // Update the game board
+    updateBoard();
+}
+
+// Function to move the player on the board
+async function movePlayer(steps) {
+    // Get the current account
+    const account = web3.eth.getAccounts().then(console.log);
+
+    // Call the movePlayer function of the contract
+    await contract.methods.movePlayer(steps).send({ from: account, gas: 200000 });
+
+    // Update the game board
+    updateBoard();
+
+    // Check if the player has won
+    checkWin();
+}
+
+// Function to check if the player has won
+async function checkWin() {
+    // Call the checkWin function of the contract
+    const result = await contract.methods.checkWin().call();
+
+    // If the player has won, display a message and play a sound
+    if (result) {
+        playSound("win.mp3");
+        alert("Congratulations! You have won the game!");
+    }
+}
+
+// Function to update the game board
+function updateBoard() {
+    // Get the current position of the player
+    const position = contract.methods.getPlayerPosition().call();
+
+    // Update the game board display
+    document.getElementById("playerPosition").innerHTML = position;
+}
+
+// Function to play a sound
+function playSound(filename) {
+    const audio = new Audio(filename);
+    audio.play();
+}
+
+// Function to challenge other players
+async function challengePlayer(username) {
+    // Get the current account
+const account = web3.eth.getAccounts().then(console.log);
+// Call the challengePlayer function of the contract
+await contract.methods.challengePlayer(username).send({ from: account, gas: 200000 });
+
+// Update the game status
+updateStatus();
+}
+
+// Function to update the game status
+function updateStatus() {
+// Get the game status
+const status = contract.methods.getGameStatus().call();
+// Update the game status display
+document.getElementById("gameStatus").innerHTML = status;
+}
+
+// Function to handle the automatic roll after 30 seconds
+function autoRoll() {
+setTimeout(function() {
+rollDice();
+}, 30000);
+}
+
+// Function to handle automatic forfeit after 3 turns
+function autoForfeit() {
+setTimeout(function() {
+forfeit();
+}, 30000 * 3);
+}
+
+// Function to handle forfeit of the game
+async function forfeit() {
+// Get the current account
+const account = web3.eth.getAccounts().then(console.log);
+
+// Call the forfeit function of the contract
+await contract.methods.forfeit().send({ from: account, gas: 200000 });
+
+// Update the game status
+updateStatus();
+}
+
+// Function to handle the automatic payout to the winner
+function autoPayout() {
+setTimeout(function() {
+payout();
+}, 30000 * 3);
+}
+
+// Function to handle the payout to the winner
+async function payout() {
+// Call the payout function of the contract
+await contract.methods.payout().send({ gas: 200000 });
+// Update the leaderboard
+updateLeaderboard();
+}
+
+// Function to update the leaderboard
+function updateLeaderboard() {
+// Get the leaderboard data
+const leaderboard = contract.methods.getLeaderboard().call();
+// Update the leaderboard display
+document.getElementById("leaderboard").innerHTML = leaderboard;
+}
+
+// Function to handle social media sharing
+function shareOnSocialMedia() {
+// Get the current account
+const account = web3.eth.getAccounts().then(console.log);
+
+// Share the game on social media
+share("I just won a game of Worms & Ladders on the blockchain! #WormsAndLadders #BlockchainGame #Ethereum", account);
+}
+
+// Function to handle mobile support
+function addMobileSupport() {
+// Add mobile support for touch events
+document.addEventListener("touchstart", rollDice);
+}
+
+// Function to handle input validation
+function inputValidation() {
+// Validate user input
+if (input.length > 0 && input.length < 100) {
+return true;
+} else {
+return false;
+}
+}
+
+// Function to handle error handling
+function errorHandling() {
+try {
+// Attempt to execute the code
+code();
+} catch (error) {
+// Handle the error
+console.error(error);
+}
+}
