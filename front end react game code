@@ -1,0 +1,86 @@
+import React, { useState, useEffect } from 'react';
+import { useWeb3 } from 'web3-react';
+import { abi, address } from './contract.js';
+import { soundEffect } from './soundEffect.js';
+import { animation } from './animation.js';
+import { socialMedia } from './socialMedia.js';
+import { mobileSupport } from './mobileSupport.js';
+import { errorHandling } from './errorHandling.js';
+import { inputValidation } from './inputValidation.js';
+import { security } from './security.js';
+import { tokenomics } from './tokenomics.js';
+
+function WormsLadders() {
+  const { account, library } = useWeb3();
+  const [contract, setContract] = useState(null);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState('');
+
+  useEffect(() => {
+    if (library && account) {
+      const contract = new library.eth.Contract(abi, address);
+      setContract(contract);
+    }
+  }, [library, account]);
+
+  useEffect(() => {
+    if (contract) {
+      contract.events.PlayerWin({}, (error, event) => {
+        if (!error) {
+          setWinner(event.returnValues.winner);
+          setGameOver(true);
+        }
+      });
+    }
+  }, [contract]);
+
+  useEffect(() => {
+    if (contract) {
+      contract.methods.getLeaderboard().call((error, result) => {
+        if (!error) {
+          setLeaderboard(result);
+        }
+      });
+    }
+  }, [contract]);
+
+  const rollDice = async () => {
+    // roll the dice
+  }
+
+  const handleChallenge = async (username) => {
+    // handle the challenge
+  }
+
+  const forfeit = async () => {
+    // handle the forfeit
+  }
+
+  return (
+    <div>
+      {!gameOver ? (
+        <div>
+          <button onClick={rollDice}>Roll Dice</button>
+          <input type="text" placeholder="Username" onChange={handleChallenge} />
+          <button onClick={forfeit}>Forfeit</button>
+        </div>
+      ) : (
+        <div>
+          <p>Game Over</p>
+          <p>Winner: {winner}</p>
+        </div>
+      )}
+      <div>
+        <p>Leaderboard</p>
+        <ul>
+          {leaderboard.map((player) => (
+            <li key={player}>{player}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default WormsLadders;
