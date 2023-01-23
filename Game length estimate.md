@@ -1,0 +1,3 @@
+What is the estimated time length of each game?
+
+The estimated time length of each game would depend on the number of players and the length of the board. For example, if the game is played by 2 players on a board of 100 spaces, and each player takes 30 seconds to roll the dice and make their move, the game would last approximately 50 minutes. However, if the board is larger or there are more players, the game would last longer. Additionally, if players take longer to make their moves, the game would also take longer. It is important to note that the time length of the game can be adjusted based on the game design and rules.
