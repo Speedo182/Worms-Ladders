@@ -10,77 +10,473 @@ import { inputValidation } from './inputValidation.js';
 import { security } from './security.js';
 import { tokenomics } from './tokenomics.js';
 
-function WormsLadders() {
-  const { account, library } = useWeb3();
-  const [contract, setContract] = useState(null);
-  const [leaderboard, setLeaderboard] = useState([]);
-  const [gameOver, setGameOver] = useState(false);
-  const [winner, setWinner] = useState('');
+function Game() {
+// ... existing state and effect hooks
 
-  useEffect(() => {
-    if (library && account) {
-      const contract = new library.eth.Contract(abi, address);
-      setContract(contract);
-    }
-  }, [library, account]);
+useEffect(() => {
+const init = async () => {
+// ... existing code
+soundEffect.init();
+animation.init();
+socialMedia.init();
+mobileSupport.init();
+errorHandling.init();
+inputValidation.init();
+security.init();
+tokenomics.init();
+};
+init();
+}, []);
 
-  useEffect(() => {
-    if (contract) {
-      contract.events.PlayerWin({}, (error, event) => {
-        if (!error) {
-          setWinner(event.returnValues.winner);
-          setGameOver(true);
-        }
-      });
-    }
-  }, [contract]);
+// ... existing functions
 
-  useEffect(() => {
-    if (contract) {
-      contract.methods.getLeaderboard().call((error, result) => {
-        if (!error) {
-          setLeaderboard(result);
-        }
-      });
-    }
-  }, [contract]);
+const handleRollDice = async () => {
+// ... existing code
+soundEffect.play('diceRoll');
+animation.start('rollingDice');
+};
 
-  const rollDice = async () => {
-    // roll the dice
-  }
+const handleShare = async () => {
+// ... existing code
+socialMedia.share(I just rolled a ${diceRoll} on Worms & Ladders! Play now and see if you can beat me.);
+animation.start('sharing');animation.start('sharing');
 
-  const handleChallenge = async (username) => {
-    // handle the challenge
-  }
+const handleShare = async () => {
+try {
+const message = I just won ${game.winningAmount} on Worms & Ladders! Play now and see if you can beat me.;
+await socialMedia.share(message);
+setShowShareModal(false);
+} catch (error) {
+errorHandling.handleError(error);
+}
+};
 
-  const forfeit = async () => {
-    // handle the forfeit
-  }
+const handleChallenge = async () => {
+try {
+const friendAddress = await inputValidation.validateAddress(challengeUsername);
+await game.challengeFriend(friendAddress, { from: account });
+animation.start('challengeSent');
+setShowChallengeModal(false);
+} catch (error) {
+errorHandling.handleError(error);
+}
+};
 
-  return (
-    <div>
-      {!gameOver ? (
-        <div>
-          <button onClick={rollDice}>Roll Dice</button>
-          <input type="text" placeholder="Username" onChange={handleChallenge} />
-          <button onClick={forfeit}>Forfeit</button>
-        </div>
-      ) : (
-        <div>
-          <p>Game Over</p>
-          <p>Winner: {winner}</p>
-        </div>
-      )}
-      <div>
-        <p>Leaderboard</p>
+const handlePlay = () => {
+if (mobileSupport.isMobile()) {
+mobileSupport.showUnsupportedMessage();
+} else {
+animation.start('playing');
+setTimeout(() => {
+handleRollDice();
+}, 2000);
+}
+};
+
+const handleRollDice = async () => {
+try {
+setLoading(true);
+const result = await game.rollDice({ from: account });
+soundEffect.play('diceRoll');
+animation.start('rollingDice');
+setTimeout(() => {
+handleMove(result.diceRoll);
+}, 2000);
+} catch (error) {
+errorHandling.handleError(error);
+}
+};
+
+const handleMove = async (diceRoll) => {
+try {
+const currentPosition = await game.getCurrentPosition({ from: account });
+const nextPosition = currentPosition + diceRoll;
+const gameEvent = await game.move(nextPosition, { from: account });
+soundEffect.play('move');
+animation.start('moving');
+setTimeout(() => {
+handleEvent(gameEvent);
+}, 2000);
+} catch (error) {
+errorHandling.handleError(error);
+}
+};
+
+const handleEvent = async (gameEvent) => {
+try {
+if (gameEvent.event === 'Won') {
+security.transferWinning(gameEvent.returnValues.winningAmount);
+soundEffect.play('winning');
+animation.start('winning');
+setTimeout(() => {
+setShowShareModal(true);
+}, 2000);
+} else if (gameEvent.event === 'Win') {
+setWinnings(gameEvent.returnValues.amount);
+animation.start('winning');
+soundEffect.play('winning');
+setShowShareModal(true);
+}
+
+// Handle share button click
+const handleShare = async () => {
+try {
+const message = I just won ${winnings} on Worms & Ladders! Play now and see if you can beat me.;
+socialMedia.share(message);
+setShowShareModal(false);
+} catch (error) {
+console.error(error);
+errorHandling.handleError(error);
+}
+};
+
+// Handle challenge button click
+const handleChallenge = async () => {
+try {
+inputValidation.validateUsername(challengeUsername);
+await game.challenge(challengeUsername, { from: account });
+setShowChallengeModal(false);
+} catch (error) {
+console.error(error);
+errorHandling.handleError(error);
+}
+};
+
+// Handle mobile rotation
+useEffect(() => {
+mobileSupport.handleRotation(setShowLeaderboard);
+}, []);
+
+// Handle security features
+useEffect(() => {
+security.handleSecurity();
+}, []);
+
+// Handle tokenomics
+useEffect(() => {
+tokenomics.handleTokenomics();
+}, []);
+
+return (
+  <div className="game-container">
+    <div className="game-board">
+      {/* Game board */}
+    </div>
+    <div className="game-controls">
+      <button onClick={handleRollDice} disabled={loading}>
+        Roll Dice
+      </button>
+      <button onClick={toggleLeaderboard}>
+        {showLeaderboard ? 'Hide Leaderboard' : 'Show Leaderboard'}
+      </button>
+      <button onClick={() => setShowChallengeModal(true)}>Challenge a Friend</button>
+    </div>
+    {showLeaderboard && (
+      <div className="leaderboard">
+        <h2>Leaderboard</h2>
         <ul>
-          {leaderboard.map((player) => (
-            <li key={player}>{player}</li>
+          {leaderboard.map((player, index) => (
+            <li key={index}>{player}</li>
           ))}
         </ul>
       </div>
+    )}
+    {showShareModal && (
+      <div className="share-modal__content">
+<h3>Share your winnings on social media!</h3>
+<form onSubmit={handleShare}>
+<textarea 
+                 value={shareMessage} 
+                 onChange={handleMessageChange} 
+                 placeholder="Enter your custom message to share..."
+                 className="share-modal__textarea"
+               />
+<div className="share-modal__options">
+<div className="share-modal__option">
+<img src={facebookLogo} alt="Facebook" className="share-modal__option-logo" />
+<input 
+                     type="checkbox" 
+                     value="facebook" 
+                     onChange={handleShareOptionChange} 
+                     className="share-modal__option-checkbox" 
+                   />
+</div>
+<div className="share-modal__option">
+<img src={twitterLogo} alt="Twitter" className="share-modal__option-logo" />
+<input 
+                     type="checkbox" 
+                     value="twitter" 
+                     onChange={handleShareOptionChange} 
+                     className="share-modal__option-checkbox" 
+                   />
+</div>
+<div className="share-modal__option">
+<img src={linkedinLogo} alt="LinkedIn" className="share-modal__option-logo" />
+<input 
+                     type="checkbox" 
+                     value="linkedin" 
+                     onChange={handleShareOptionChange} 
+                     className="share-modal__option-checkbox" 
+                   />
+</div>
+</div>
+<button className="share-modal__submit-btn">Share</button>
+</form>
+</div>
+</div>
+)}
+{showChallengeModal && (
+<div className="challenge-modal">
+<div className="leaderboard-container">
+  <h2>Leaderboard</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {leaderboard.map((user, index) => (
+        <tr key={user.username}>
+          <td>{index + 1}</td>
+          <td>{user.username}</td>
+          <td>{user.score}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<div className={`modal ${showChallengeModal ? 'show' : ''}`}>
+  <div className="modal-content">
+    <h2>Challenge a friend</h2>
+    <form onSubmit={handleChallenge}>
+      <label htmlFor="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        value={challengeUsername}
+        onChange={e => setChallengeUsername(e.target.value)}
+      />
+      <button type="submit">Challenge</button>
+    </form>
+  </div>
+</div>
+<div className={`modal ${showShareModal ? 'show' : ''}`}>
+  <div className="modal-content">
+    <h2>Share your score</h2>
+    <p>Your message:</p>
+    <textarea
+      value={`I just rolled a ${diceRoll} on Worms & Ladders! Play now and see if you can beat me.`}
+      readOnly/ >
+<div className="share-buttons">
+<button
+className="share-button"
+onClick={() => socialMedia.share('facebook', message)}
+>
+Share on Facebook
+</button>
+<button
+className="share-button"
+onClick={() => socialMedia.share('twitter', message)}
+>
+Share on Twitter
+</button>
+<button
+className="share-button"
+onClick={() => socialMedia.share('linkedin', message)}
+>
+Share on LinkedIn
+</button>
+</div>
+</div>
+) : null;
+
+const handleRollDice = async () => {
+setLoading(true);
+animation.start('rolling');
+soundEffect.play('rolling');
+try {
+const diceRoll = await game.rollDice({ from: account });
+setDiceRoll(diceRoll);
+if (diceRoll === 6) {
+setShowShareModal(true);
+animation.start('sharing');
+soundEffect.play('winning');
+} else {
+animation.start('idle');
+soundEffect.play('idle');
+}
+} catch (error) {
+console.error(error);
+animation.start('error');
+soundEffect.play('error');
+errorHandling.handle(error);
+} finally {
+setLoading(false);
+}
+};
+
+const handleChallenge = async () => {
+if (!inputValidation.validateUsername(challengeUsername)) {
+return errorHandling.handle('Invalid username.');
+}
+try {
+await game.challenge(challengeUsername, { from: account });
+setChallengeUsername('');
+setShowChallengeModal(false);
+soundEffect.play('challenge');
+} catch (error) {
+console.error(error);
+soundEffect.play('error');
+animation.start('error');
+security.logError(error);
+}
+};
+
+const handleChallenge = async () => {
+try {
+inputValidation.validateUsername(challengeUsername);
+const transaction = await game.challengePlayer(challengeUsername, { from: account });
+tokenomics.transferTokens(transaction.receipt.from, transaction.receipt.to, transaction.receipt.value);
+setShowChallengeModal(false);
+soundEffect.play('challengeSent');
+animation.start('challengeSent');
+} catch (error) {
+console.error(error);
+soundEffect.play('error');
+animation.start('error');
+security.logError(error);
+}
+};
+
+const handleCloseModal = () => {
+setShowShareModal(false);
+setShowChallengeModal(false);
+};
+
+return (
+  <div className="game-container">
+    <div className="game-board">
+      {/* Game board elements */}
     </div>
-  );
+    <div className="game-controls">
+      <button onClick={handleRollDice} disabled={loading}>
+        {loading ? 'Rolling...' : 'Roll Dice'}
+      </button>
+      <button onClick={() => setShowLeaderboard(!showLeaderboard)}>
+        {showLeaderboard ? 'Hide Leaderboard' : 'Show Leaderboard'}
+      </button>
+      <button onClick={() => setShowShareModal(true)}>Share</button>
+      <button onClick={() => setShowChallengeModal(true)}>Challenge</button>
+    </div>
+    {showLeaderboard && (
+      <div className="leaderboard">
+        {/* Leaderboard elements */}
+      </div>
+    )}
+    {showShareModal && (
+      <div className="modal share-modal">
+        <h3>Share Your Score</h3>
+        <textarea
+          value={`I just rolled a ${diceRoll} on Worms & Ladders! Play now and see if you can beat me.`}
+          readOnly
+        />
+        <div className="modal-actions">
+          <button onClick={handleShare}>Share</button>
+          <button onClick={handleCloseModal}>Close</button>
+        </div>
+      </div>
+    )}
+    {showChallengeModal && (
+      <div className="modal challenge-modal">
+  <div className="modal-content">
+    <h3>Challenge a friend</h3>
+    <form onSubmit={handleChallenge}>
+      <label>
+        Enter your friend's username:
+        <input
+          type="text"
+          value={challengeUsername}
+          onChange={(e) => setChallengeUsername(e.target.value)}
+        />
+      </label>
+      <button type="submit">Challenge</button>
+    </form>
+  </div>
+</div>
+<div className="modal leaderboard-modal">
+  <div className="modal-content">
+    <h3>Leaderboard</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Username</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {leaderboard.map((player, index) => (
+          <tr key={player.username}>
+            <td>{index + 1}</td>
+            <td>{player.username}</td>
+            <td>{player.score}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div className={`game-board ${animation.getClass()}`}>
+  <div className="dice-roll">{diceRoll}</div>
+  <button onClick={handleRollDice} disabled={loading}>
+    Roll Dice
+  </button>
+  <button onClick={() => setShowShareModal(true)}>Share</button>
+  <button onClick={() => setShowChallengeModal(true)}>Challenge a friend</button>
+  <button onClick={() => setShowLeaderboard(true)}>Leaderboard</button>
+</div>
+
+{showShareModal && (
+  <div className="modal share-modal">
+    <div className="modal-content">
+      <h3>Share your roll</h</div>
+<div className="modal leaderboard-modal" style={{ display: showLeaderboard ? 'block' : 'none' }}>
+  <h3>Leaderboard</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Roll</th>
+      </tr>
+    </thead>
+    <tbody>
+      {leaderboard.map((player, index) => (
+        <tr key={player.username}>
+          <td>{index + 1}</td>
+          <td>{player.username}</td>
+          <td>{player.roll}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<div className="modal challenge-modal" style={{ display: showChallengeModal ? 'block' : 'none' }}>
+  <h3>Challenge a Friend</h3>
+  <input
+    type="text"
+    value={challengeUsername}
+    onChange={e => setChallengeUsername(e.target.value)}
+    placeholder="Enter your friend's username..."
+  />
+  <button onClick={handleChallenge}>Challenge</button>
+</div>
+</div>
+);
 }
 
-export default WormsLadders;
+export default Game;
