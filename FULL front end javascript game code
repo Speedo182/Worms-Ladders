@@ -1,0 +1,152 @@
+// Initialize game variables
+var player = {
+  position: 0,
+  balance: 0
+};
+
+var inGameTokens = 0;
+var tokenPrice = 0.1 ether;
+
+// Purchase tokens function
+function purchaseTokens() {
+  if (player.balance >= tokenPrice) {
+    player.balance -= tokenPrice;
+    inGameTokens += 1;
+    updateBalance();
+  } else {
+    alert("Insufficient funds to purchase tokens. Please add more ether to your account.");
+  }
+}
+
+// Roll dice function
+function rollDice() {
+  var roll = Math.floor(Math.random() * 6) + 1;
+  player.position += roll;
+  updatePosition();
+  checkForWorm();
+  checkForLadder();
+}
+
+// Check for worm function
+function checkForWorm() {
+  if (board[player.position].classList.contains("worm")) {
+    player.position = board[player.position].wormTo;
+    updatePosition();
+    playSound("worm.mp3");
+  }
+}
+
+// Check for ladder function
+function checkForLadder() {
+  if (board[player.position].classList.contains("ladder")) {
+    player.position = board[player.position].ladderTo;
+    updatePosition();
+    playSound("ladder.mp3");
+  }
+}
+
+// Update player position on board
+function updatePosition() {
+  board[player.position].classList.add("player");
+  if (player.position > 0) {
+    board[player.position - 1].classList.remove("player");
+  }
+  checkForWin();
+}
+
+// Check for win function
+function checkForWin() {
+  if (player.position === 100) {
+    alert("You win!");
+    playSound("win.mp3");
+  }
+}
+
+// Update player balance
+function updateBalance() {
+  balanceDisplay.innerHTML = player.balance + " ether";
+}
+
+// Play sound function
+function playSound(fileName) {
+  var audio = new Audio("audio/" + fileName);
+  audio.play();
+}
+
+// Initialize game
+function init() {
+  board = document.querySelectorAll(".square");
+  balanceDisplay = document.querySelector("#balance");
+  purchaseBtn = document.querySelector("#purchase-tokens-btn");
+  rollBtn = document.querySelector("#roll-dice-btn");
+  purchaseBtn.addEventListener("click", purchaseTokens);
+
+
+_______________________________
+
+
+
+Sure, I can continue the code for the main.js file. Here is an example of how you can continue the code:
+
+function rollDice() {
+// Generate a random number between 1 and 6
+var roll = Math.floor(Math.random() * 6) + 1;
+// Update the dice roll in the UI
+diceRoll.innerHTML = roll;
+// Update the player's position on the board
+updatePosition(roll);
+}
+
+function updatePosition(roll) {
+// Update the player's position on the board
+var currentPosition = player.position;
+var newPosition = currentPosition + roll;
+player.position = newPosition;
+// Check if the player landed on a ladder or a worm
+checkSquareType(newPosition);
+}
+
+function checkSquareType(position) {
+var squareType = board[position].type;
+if (squareType === "ladder") {
+// Move the player up the ladder
+movePlayer(position, board[position].end);
+} else if (squareType === "worm") {
+// Move the player down the worm
+movePlayer(position, board[position].end);
+}
+}
+
+function movePlayer(start, end) {
+// Update the player's position on the board
+player.position = end;
+// Update the player's position in the UI
+playerPiece.style.left = board[end].x + "px";
+playerPiece.style.top = board[end].y + "px";
+// Check if the player has won the game
+checkForWin();
+}
+
+function checkForWin() {
+if (player.position === board.length - 1) {
+alert("You won!");
+}
+}
+
+function purchaseTokens() {
+if (player.balance >= tokenPrice) {
+// Deduct token price from player's balance
+player.balance -= tokenPrice;
+// Add tokens to player's in-game token balance
+player.inGameTokens += 1;
+// Update the UI
+tokenBalance.innerHTML = player.inGameTokens;
+etherBalance.innerHTML = player.balance;
+} else {
+alert("Insufficient funds to purchase tokens.");
+}
+}
+
+// Add event listeners
+diceBtn.addEventListener("click", rollDice);
+purchaseBtn.addEventListener("click", purchaseTokens);
