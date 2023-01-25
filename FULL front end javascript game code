@@ -150,3 +150,754 @@ alert("Insufficient funds to purchase tokens.");
 // Add event listeners
 diceBtn.addEventListener("click", rollDice);
 purchaseBtn.addEventListener("click", purchaseTokens);
+
+/* Roll Dice Animation */
+@keyframes roll-dice {
+0% { transform: rotate(0deg); }
+25% { transform: rotate(-10deg); }
+50% { transform: rotate(10deg); }
+75% { transform: rotate(-10deg); }
+100% { transform: rotate(0deg); }
+}
+
+________________________
+
+
+/* Animate dice roll */
+.dice {
+animation: roll-dice 1s;
+}
+
+/* Animate squares */
+.square {
+animation: animate-squares 0.5s;
+}
+
+/* Animate message pop up */
+.message {
+animation: animate-message 0.5s;
+}
+
+/* Animate share button */
+.share-button {
+animation: animate-share 0.5s;
+}
+
+/* Animate modal */
+.modal {
+animation: animate-modal 0.5s;
+}
+
+/* Animate close button */
+.close-button {
+animation: animate-close 0.5s;
+}
+
+/* Animate input fields */
+.share-input {
+animation: animate-input 0.5s;
+}
+
+/* Animate labels */
+.share-label {
+animation: animate-label 0.5s;
+}
+
+/* Animate submit button */
+.submit-button {
+animation: animate-submit 0.5s;
+}
+
+/* Animate progress bar */
+.progress-bar {
+animation: animate-progress 2s;
+}
+
+/* Animate player tokens */
+.player-tokens {
+animation: animate-tokens 0.5s;
+}
+
+/* Animate player balance */
+.player-balance {
+animation: animate-balance 0.5s;
+}
+
+/* Animate player message */
+.player-message {
+animation: animate-message 0.5s;
+}
+
+/* Animate player action */
+.player-action {
+animation: animate-action 0.5s;
+}
+
+/* Animate player roll */
+.player-roll {
+animation: animate-roll 0.5s;
+}
+
+/* Animate player turn */
+.player-turn
+
+________
+
+
+
+{
+animation: move-player 0.5s ease-in-out;
+}
+
+/* Animate dice roll */
+.dice {
+animation: roll-dice 0.5s ease-in-out;
+}
+
+/* Animate ladder climb */
+.square.ladder {
+animation: climb-ladder 1s ease-in-out;
+}
+
+/* Animate worm slide */
+.square.worm {
+animation: slide-worm 1s ease-in-out;
+}
+
+/* Animate winning */
+.game-over.win {
+animation: win-game 1s ease-in-out;
+}
+
+/* Animate losing */
+.game-over.lose {
+animation: lose-game 1s ease-in-out;
+}
+
+/* Media Queries */
+@media screen and (max-width: 600px) {
+.board {
+width: 90%;
+}
+.square {
+width: 10%;
+}
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 400px) {
+.board {
+font-size: 0.8rem;
+}
+}
+
+/* Sound Effects */
+var rollDiceSound = new Audio("audio/roll-dice.mp3");
+var movePlayerSound = new Audio("audio/move-player.mp3");
+var climbLadderSound = new Audio("audio/climb-ladder.mp3");
+var slideWormSound = new Audio("audio/slide-worm.mp3");
+var winGameSound = new Audio("audio/win-game.mp3");
+var loseGameSound = new Audio("audio/lose-game.mp3");
+
+/* Play sound effect when dice is rolled */
+function playRollDiceSound() {
+rollDiceSound.currentTime = 0;
+rollDiceSound.play();
+}
+
+/* Play sound effect when player moves */
+function playMovePlayerSound() {
+movePlayerSound.currentTime = 0;
+movePlayerSound.play();
+}
+
+/* Play sound effect when climbing ladder */
+function playClimbLadderSound() {
+climbLadderSound.currentTime = 0;
+climbLadderSound.play();
+}
+
+/* Play sound effect when sliding down worm */
+function playSlideWormSound() {
+slideWormSound.currentTime = 0;
+slide
+
+
+_________
+
+
+
+WormSound.play();
+}
+
+/* Play sound effect when climbing up ladder */
+function playClimbLadderSound() {
+climbLadderSound.currentTime = 0;
+climbLadderSound.play();
+}
+
+/* Play sound effect when rolling dice */
+function playRollDiceSound() {
+rollDiceSound.currentTime = 0;
+rollDiceSound.play();
+}
+
+/* Play sound effect when landing on snake */
+function playLandSnakeSound() {
+landSnakeSound.currentTime = 0;
+landSnakeSound.play();
+}
+
+/* Play sound effect when landing on ladder */
+function playLandLadderSound() {
+landLadderSound.currentTime = 0;
+landLadderSound.play();
+}
+
+/* Play sound effect when winning the game */
+function playWinSound() {
+winSound.currentTime = 0;
+winSound.play();
+}
+
+/* Play sound effect when losing the game */
+function playLoseSound() {
+loseSound.currentTime = 0;
+loseSound.play();
+}
+
+/* Play sound effect when counting down to roll */
+function playCountdownSound() {
+countdownSound.currentTime = 0;
+countdownSound.play();
+}
+
+/* Play sound effect when paying tax */
+function playPayTaxSound() {
+payTaxSound.currentTime = 0;
+payTaxSound.play();
+}
+
+/* Play sound effect when buying tokens */
+function playBuyTokenSound() {
+buyTokenSound.currentTime = 0;
+buyTokenSound.play();
+}
+
+/* Play sound effect when challenging other players */
+function playChallengeSound() {
+challengeSound.currentTime = 0;
+challengeSound.play();
+}
+
+/* Play sound effect when entering the game */
+function playEnterSound() {
+enterSound.currentTime = 0;
+enterSound.play();
+}
+
+/* Play sound effect when exiting the game */
+function playExitSound() {
+exitSound.currentTime = 0;
+exitSound.play();
+}
+
+/* Play sound effect when using a power up */
+function playPowerUpSound() {
+powerUpSound.currentTime = 0;
+powerUpSound.play();
+}
+
+/* Play sound effect when using a power down */
+function playPowerDownSound() {
+powerDownSound.currentTime = 0;
+powerDownSound.play();
+}
+
+/* Play sound effect when climbing up ladder */
+function playClimbLadderSound() {
+climbLadderSound.currentTime = 0;
+climbLadderSound.play();
+}
+
+/* Play sound effect when landing on a regular square */
+function playRegularSquareSound() {
+regularSquareSound.currentTime = 0;
+regularSquareSound.play();
+}
+
+/* Play sound effect when landing on a special square */
+function playSpecialSquareSound() {
+specialSquareSound.currentTime = 0;
+specialSquareSound.play();
+}
+
+/* Play sound effect when game is won */
+function playWinSound() {
+winSound.currentTime = 0;
+winSound.play();
+}
+
+/* Play sound effect when game is lost */
+function playLoseSound() {
+loseSound.currentTime = 0;
+loseSound.play();
+}
+
+/* Play background music during game play */
+function playBackgroundMusic() {
+backgroundMusic.currentTime = 0;
+backgroundMusic.play();
+}
+
+/* Stop background music */
+function stopBackgroundMusic() {
+backgroundMusic.pause();
+}
+
+/* Play countdown warning sound when time is running out */
+function playCountdownWarningSound() {
+countdownWarningSound.currentTime = 0;
+countdownWarningSound.play();
+}
+
+/* Play game over sound */
+function playGameOverSound() {
+gameOverSound.currentTime = 0;
+gameOverSound.play();
+}
+
+/* Play game won sound */
+function playGameWonSound() {
+gameWonSound.currentTime = 0;
+gameWonSound.play();
+}
+
+/* Play roll dice sound */
+function playRollDiceSound() {
+rollDiceSound.currentTime = 0;
+rollDiceSound.play();
+}
+
+/* Play token purchase sound */
+function playTokenPurchaseSound() {
+tokenPurchaseSound.currentTime = 0;
+tokenPurchaseSound.play();
+}
+
+/* Play slide ladder sound */
+function playSlideLadderSound() {
+slideLadderSound.currentTime = 0;
+slideLadderSound.play();
+}
+
+/* Play background music */
+function playBackgroundMusic() {
+backgroundMusic.currentTime = 0;
+backgroundMusic.play();
+}
+
+/* Stop background music */
+function stopBackgroundMusic() {
+backgroundMusic.pause();
+}
+
+/* Mute 
+
+_______________________
+
+
+/ Unmute all sound effects */
+function toggleMute() {
+if (muted) {
+muteButton.innerHTML = "Mute";
+slideWormSound.muted = false;
+climbLadderSound.muted = false;
+backgroundMusic.muted = false;
+countdownWarningSound.muted = false;
+gameWinSound.muted = false;
+muted = false;
+} else {
+muteButton.innerHTML = "Unmute";
+slideWormSound.muted = true;
+climbLadderSound.muted = true;
+backgroundMusic.muted = true;
+countdownWarningSound.muted = true;
+gameWinSound.muted = true;
+muted = true;
+}
+}
+
+// Event listeners
+muteButton.addEventListener("click", toggleMute);
+
+// Start background music
+backgroundMusic.loop = true;
+backgroundMusic.play();
+}
+
+// Start game
+init();
+}
+
+____________________________
+
+
+}
+
+/* Media Queries */
+@media screen and (max-width: 600px) {
+.board {
+width: 90%;
+}
+.square {
+width: 10%;
+}
+}
+
+/* Animate player turn */
+.player-turn {
+animation: flash 1s;
+}
+
+@keyframes flash {
+0% {background-color: #fff;}
+50% {background-color: #2196f3;}
+100% {background-color: #fff;}
+}
+
+/* Play sound effect when sliding down worm */
+function playSlideWormSound() {
+slideWormSound.currentTime = 0;
+slideWormSound.play();
+}
+
+/* Play sound effect when sliding up ladder */
+function playSlideLadderSound() {
+slideLadderSound.currentTime = 0;
+slideLadderSound.play();
+}
+
+/* Play countdown warning sound */
+function playCountdownWarningSound() {
+countdownWarningSound.currentTime = 0;
+countdownWarningSound.play();
+}
+
+/* Stop background music */
+function stopBackgroundMusic() {
+backgroundMusic.pause();
+}
+
+/* Mute and unmute sound effects */
+function toggleMute() {
+if (muteButton.innerHTML === "Mute") {
+soundEffects.forEach(function(soundEffect) {
+soundEffect.muted = true;
+});
+muteButton.innerHTML = "Unmute";
+} else {
+soundEffects.forEach(function(soundEffect) {
+soundEffect.muted = false;
+});
+muteButton.innerHTML = "Mute";
+}
+}
+
+/* Play sound effect when rolling dice */
+function playRollDiceSound() {
+rollDiceSound.currentTime = 0;
+rollDiceSound.play();
+}
+
+/* Play sound effect when landing on ladder */
+function playLadderSound() {
+ladderSound.currentTime = 0;
+ladderSound.play();
+}
+
+/* Play sound effect when sliding down worm */
+function playSlideWormSound() {
+slideWormSound.currentTime = 0;
+slideWormSound.play();
+}
+
+/* Play sound effect when winning game */
+function playWinSound() {
+winSound.currentTime = 0;
+winSound.play();
+}
+
+/* Play countdown warning sound */
+function playCountdownWarningSound() {
+countdownWarningSound.currentTime = 0;
+countdownWarningSound.play();
+}
+
+/* Initialize game */
+function init() {
+
+// Get elements
+var rollDiceButton = document.getElementById("roll-dice-button");
+var player = document.getElementById("player");
+var dice = document.getElementById("dice");
+var message = document.getElementById("message");
+var tokens = document.getElementById("tokens");
+var purchaseBtn = document.getElementById("purchase-tokens-button");
+var muteButton = document.getElementById("mute-button");
+
+// Audio files
+var rollDiceSound = new Audio("audio/roll-dice.mp3");
+var slideWormSound = new Audio("audio/slide-worm.mp3");
+var ladderClimbSound = new Audio("audio/ladder-climb.mp3");
+var backgroundMusic = new Audio("audio/background-music.mp3");
+var gameOverSound = new Audio("audio/game-over.mp3");
+var winnerSound = new Audio("audio/winner.mp3");
+var countdownSound = new Audio("audio/countdown.mp3");
+
+// Game variables
+var playerPosition = 0;
+var inGameTokens = 0;
+var tokenPrice = 0.1 ether;
+
+// Initialize game
+function init() {
+updateTokens();
+rollDiceButton.addEventListener("click", rollDice);
+purchaseBtn.addEventListener("click", purchaseTokens);
+muteButton.addEventListener("click", toggleMute);
+
+// Start background music
+backgroundMusic.loop = true;
+backgroundMusic.play();
+}
+
+// Roll dice
+function rollDice() {
+if (inGameTokens >= 1) {
+inGameTokens--;
+updateTokens();
+rollDiceSound.currentTime= 0;
+rollDiceSound.play();
+
+var diceRoll = Math.floor(Math.random() * 6) + 1;
+console.log("Dice roll: " + diceRoll);
+
+var currentPosition = player.position;
+var newPosition = currentPosition + diceRoll;
+
+if (newPosition > 100) {
+newPosition = 100;
+}
+
+player.position = newPosition;
+updatePlayerPosition();
+
+checkForWorm();
+checkForLadder();
+checkForWin();
+
+} else {
+alert("You do not have enough tokens to roll the dice. Please purchase more tokens.");
+}
+}
+
+// Event listener
+rollDiceButton.addEventListener("click", rollDice);
+}
+
+// Start game
+init();
+
+/* With its advanced features and professional design, Snakes & Ladders is sure to be a hit among players and investors alike. So, Hurry up and be a part of this exciting and thrilling game. */
+}
+}
+// Add event listener to roll dice button
+rollDiceButton.addEventListener("click", rollDice);
+
+// Function to move player
+function movePlayer(spaces) {
+var currentSquare = player.position;
+var nextSquare = currentSquare + spaces;
+
+// Check if next square is a worm
+if (isWorm(nextSquare)) {
+playSlideWormSound();
+nextSquare = getWormEndSquare(nextSquare);
+}
+
+// Check if next square is a ladder
+if (isLadder(nextSquare)) {
+playClimbLadderSound();
+nextSquare = getLadderEndSquare(nextSquare);
+}
+
+// Update player position
+player.position = nextSquare;
+updatePlayer();
+
+// Check if player has won
+if (player.position === 100) {
+playWinSound();
+alert("You won!");
+}
+}
+
+// Check if square is a worm
+function isWorm(square) {
+return worms.indexOf(square) !== -1;
+}
+
+// Get end square of worm
+function getWormEndSquare(square) {
+return worms[worms.indexOf(square) + 1];
+}
+
+// Check if square is a ladder
+function isLadder(square) {
+return ladders.indexOf(square) !== -1;
+}
+
+// Get end square of ladder
+function getLadderEndSquare(square) {
+return ladders[ladders.indexOf(square) + 1];
+}
+
+// Update tokens display
+function updateTokens() {
+tokenDisplay.innerHTML = inGameTokens;
+}
+
+// Update player display
+function updatePlayer() {
+player.square.classList.remove("player");
+player.position = newPosition;
+player.square = squares[newPosition];
+player.square.classList.add("player");
+}
+
+// Check for worm or ladder
+function checkForWormOrLadder() {
+if (player.square.classList.contains("worm")) {
+playSlideWormSound();
+updatePlayer(player.position - 3);
+} else if (player.square.classList.contains("ladder")) {
+playClimbLadderSound();
+updatePlayer(player.position + 5);
+}
+}
+
+// Purchase tokens
+function purchaseTokens() {
+if (player.balance >= tokenPrice) {
+player.balance -= tokenPrice;
+inGameTokens += 10;
+updateTokens();
+playPurchaseSound();
+} else {
+playErrorSound();
+}
+}
+
+// Update tokens display
+function updateTokens() {
+tokenDisplay.innerHTML = inGameTokens;
+}
+
+// Mute/unmute background music
+function toggleMute() {
+if (backgroundMusic.muted) {
+backgroundMusic.muted = false;
+muteButton.innerHTML = "Mute";
+} else {
+backgroundMusic.muted = true;
+muteButton.innerHTML = "Unmute";
+}
+}
+
+// Play sound effect when sliding down worm
+function playSlideWormSound() {
+slideWormSound.currentTime = 0;
+slideWormSound.play();
+}
+
+// Play sound effect when climbing ladder
+function playClimbLadderSound() {
+climbLadderSound.currentTime = 0;
+climbLadderSound.play();
+}
+
+// Play sound effect when sliding down worm
+function playSlideWormSound() {
+slideWormSound.currentTime = 0;
+slideWormSound.play();
+}
+
+// Play sound effect when winning
+function playWinSound() {
+winSound.currentTime = 0;
+winSound.play();
+}
+
+// Play sound effect when losing
+function playLoseSound() {
+loseSound.currentTime = 0;
+loseSound.play();
+}
+
+// Play countdown warning sound
+function playCountdownWarningSound() {
+countdownWarningSound.currentTime = 0;
+countdownWarningSound.play();
+}
+
+// Play background music
+function playBackgroundMusic() {
+backgroundMusic.currentTime = 0;
+backgroundMusic.loop = true;
+backgroundMusic.play();
+}
+
+// Stop background music
+function stopBackgroundMusic() {
+backgroundMusic.pause();
+}
+
+// Toggle mute
+function toggleMute() {
+if (mute) {
+mute = false;
+backgroundMusic.muted = false;
+rollDiceSound.muted = false;
+slideWormSound.muted = false;
+climbLadderSound.muted = false;
+winSound.muted = false;
+loseSound.muted = false;
+countdownWarningSound.muted = false;
+muteButton.innerHTML = "Mute";
+} else {
+mute = true;
+backgroundMusic.muted = true;
+rollDiceSound.muted = true;
+slideWormSound.muted = true;
+climbLadderSound.muted = true;
+winSound.muted = true;
+loseSound.muted = true;
+countdownWarningSound.muted = true;
+muteButton.innerHTML = "Unmute";
+}
+}
+
+// Event listeners
+muteButton.addEventListener("click", toggleMute);
+
+// Start game
+init();
+
+})();
+
+
+
+
+
+
