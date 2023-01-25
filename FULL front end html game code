@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Worms & Ladders</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <div id="board"></div>
+        <div id="dice-container">
+            <button id="roll-dice-button">Roll Dice</button>
+            <div id="dice"></div>
+        </div>
+        <div id="token-container">
+            <button id="purchase-tokens-button">Purchase Tokens</button>
+            <div id="token-balance"></div>
+        </div>
+        <div id="modal-container">
+            <div id="modal">
+                <div id="modal-content">
+                    <div id="modal-header">
+                        <h2>Congratulations!</h2>
+                        <button id="close-modal-button">X</button>
+                    </div>
+                    <div id="modal-body">
+                        <p>You have won the game!</p>
+                        <p>Your winnings: <span id="winnings"></span></p>
+                        <div id="share-container">
+                            <input type="text" id="share-input" placeholder="Enter your wallet address">
+                            <button id="share-button">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
